@@ -3,11 +3,11 @@ from email.message import EmailMessage
 import ssl
 import os
 from dotenv import load_dotenv
+import json
 
-load_dotenv() # load .env file
+load_dotenv() # load .env 
 # Variables
-phoneNumber1 = os.getenv('PHONE_NUMBER1')
-phoneNumber2 = os.getenv('PHONE_NUMBER2')
+phoneNumbers = json.loads(os.getenv('PHONE_NUMBERS'))
 senderEmail = os.getenv('SENDER_EMAIL')
 senderPass = os.getenv('SENDER_PWD')
 
@@ -18,7 +18,7 @@ def sendEmail(body):
     smtpPass = senderPass
 
     sender = senderEmail
-    receivers = [phoneNumber1, phoneNumber2]
+    receivers = phoneNumbers
 
     subject = "Daily Report"
     message = body
