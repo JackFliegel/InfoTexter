@@ -1,2 +1,3 @@
 # environment variables
 .env
+__pycache__/emailServer.cpython-311.pyc

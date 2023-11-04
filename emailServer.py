@@ -1,17 +1,24 @@
 import smtplib # Import smtplib for the actual sending function
 from email.message import EmailMessage
 import ssl
+import os
+from dotenv import load_dotenv
+
+load_dotenv() # load .env file
+# Variables
+phoneNumber1 = os.getenv('PHONE_NUMBER1')
+phoneNumber2 = os.getenv('PHONE_NUMBER2')
+senderEmail = os.getenv('SENDER_EMAIL')
+senderPass = os.getenv('SENDER_PWD')
 
 def sendEmail(body):
-    smtpServer = "smtp.gmail.com"
+    smtpServer = "smtp.gmail.com" # change if not using gmail smtp
     port = 465 #SSL
-    smtpUser = "infoTexter3@gmail.com"
-    smtpPass = "taaguyrmwvghoatu"
+    smtpUser = senderEmail
+    smtpPass = senderPass
 
-    sender = "infotexter3@gmail.com"
-    receivers = ["5136007416@vzwpix.com", "8594621474@mms.att.net"]
-    # receivers = ["5136007416@vzwpix.com"]
-    # receivers = ["lildenzil@gmail.com"]
+    sender = senderEmail
+    receivers = [phoneNumber1, phoneNumber2]
 
     subject = "Daily Report"
     message = body
