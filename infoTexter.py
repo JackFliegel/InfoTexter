@@ -27,7 +27,7 @@ def getNews():
         my_list.append({'title' : data['articles'][i]['title'], 'url' : data['articles'][i]['url']})
         body += "Title: {title}\nURL: {url}\n\n".format(title = my_list[i]['title'], url = my_list[i]['url'])
 
-    return data
+    return body
 
 def getStocks():
     vantageAPIKey = 'JFS0LR00E05LA2QI'
@@ -43,20 +43,23 @@ def getWeather():
     def tempToF(temp):
         return (temp - 273.15) * (9/5) + 32
     apiKey = '0ca295f5433f830a80307a6e14690a92'
-    lat = '39.10'; lon = '-84.51' #Cincinnati
-    r = requests.get('http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={key}'.format(lat = lat, lon = lon, key = apiKey))
-    data = r.json()
+    lat, lon = '39.10', '-84.51' #Cincinnati
+    # r = requests.get('http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={key}'.format(lat = lat, lon = lon, key = apiKey))
+    # data = r.json()
+    data = readSet('weatherData.json')
+    pprint(data)
 
-    with open('./data/weatherData.json', 'r') as infile:
-        weatherDataTest = json.load(infile)
-    temp = ('{:.2f}°F').format(tempToF(weatherDataTest['main']['temp']))
-    description = weatherDataTest['weather'][0]['description']
-    return temp + '\n' + description
+    temp = ('{:.2f}°F').format(tempToF(data['main']['temp']))
+    description = data['weather'][0]['description']
+    return f'{temp} \n {description}'
+
+def getTraffic():
+    apiKey = 'mdlAqBInDu2FD5pUFvPU4F9n74TwVvCp'
+    
 
 def main():
     tempData = getWeather()
     pprint(tempData)
-    writeSet(tempData, 'newsData.json')
     # data = getStocks() + getNews() + getWeather()
     # pprint(data)
     #sendEmail(data)
