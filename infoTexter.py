@@ -4,30 +4,30 @@ from emailServer import sendEmail
 import datetime
 import json
 
-def readSet(key):
-    data = []
-    # Reads in the pixel values 
-    with open(f'./data/{key}', 'r') as file:
-        for currentStep, line in enumerate(file, start=0):
-            data.append([float(num) for num in line.strip().split()]) #adds the values all 784 pixels into array (indexed: 0 to 783)
+def readSet(filename):
+    with open(f'./data/{filename}', 'r') as infile:
+        data = json.load(infile) 
+
     return data
 
-def writeSet(data, str):    
-    with open(f'./data/{str}', 'w') as file:
-        for item in data:
-            file.write(f'{item}\n')
+def writeSet(data, filename):    
+    with open(f'./data/{filename}', 'w') as outfile:
+        json.dump(data, outfile)
 
 def getNews():
     newsAPIKey = '64f44e13e28b4068ab0bbae7d3c074a7'
     country = 'us'
-    r = requests.get('https://newsapi.org/v2/top-headlines?country={}&apiKey={}'.format(country, newsAPIKey))
-    data = r.json()
+    # r = requests.get('https://newsapi.org/v2/top-headlines?country={}&apiKey={}'.format(country, newsAPIKey))
+    # data = r.json()
+    data = readSet('newsData.json')
     my_list = []
     body = "\n"
 
     for i in range(0,3):
         my_list.append({'title' : data['articles'][i]['title'], 'url' : data['articles'][i]['url']})
         body += "Title: {title}\nURL: {url}\n\n".format(title = my_list[i]['title'], url = my_list[i]['url'])
+
+    return data
 
 def getStocks():
     vantageAPIKey = 'JFS0LR00E05LA2QI'
@@ -54,11 +54,11 @@ def getWeather():
     return temp + '\n' + description
 
 def main():
-    data = getStocks() + getNews() + getWeather()
-    pprint(data)
+    tempData = getWeather()
+    pprint(tempData)
+    writeSet(tempData, 'newsData.json')
+    # data = getStocks() + getNews() + getWeather()
+    # pprint(data)
     #sendEmail(data)
-    return 0
 
 main()
-
-print('test')
