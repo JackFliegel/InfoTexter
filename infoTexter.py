@@ -24,6 +24,8 @@ def getNews():
     body = "\n"
 
     for i in range(0,3):
+        if data['articles'][i]['url'] == "https://removed.com":
+            continue
         my_list.append({'title' : data['articles'][i]['title'], 'url' : data['articles'][i]['url']})
         body += "Title: {title}\nURL: {url}\n\n".format(title = my_list[i]['title'], url = my_list[i]['url'])
 
@@ -60,8 +62,8 @@ def getTraffic():
 def main():
     tempData = getWeather()
     pprint(tempData)
-    # data = getStocks() + getNews() + getWeather()
+    data = getNews() + getWeather()
     # pprint(data)
-    #sendEmail(data)
+    sendEmail(data)
 
 main()
